@@ -1,0 +1,49 @@
+name: Test and Lint Commits
+
+on:
+  workflow_dispatch:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    branches-ignore: [production]
+
+jobs:
+  lint:
+    name: Lint the project using golangci-lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v2
+
+      - name: Lint the commits
+        uses: golangci/golangci-lint-action@v2
+        with:
+          version: v1.28.3
+          args: --deadline 20m
+
+  test:
+    name: Test project and new commits via the actual and E2E tests
+    runs-on: ubuntu-latest
+    container: golang:1.14
+    env:
+      COUCHDB_USER: admin
+      COUCHDB_PASSWORD: myshinnypassword
+      COUCHDB_TESTING_DATABASE: "http://admin:myshinnypassword@couchdb:5984/e2e"
+
+    services:
+      couchdb:
+        image: couchdb:3
+        env:
+          COUCHDB_USER: ${{ env.COUCHDB_USER }}
+          COUCHDB_PASSWORD: ${{ env.COUCHDB_PASSWORD }}
+        ports:
+          - 5984:5984
+
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v2
+
+      - name: Run the actual test
+        run: make test
+
+      - name: Run the E2E tests
+        run: make e2etest
