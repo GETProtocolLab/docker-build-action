@@ -1,0 +1,6 @@
+{
+  "name": "Deploy Built Images Backend Template",
+  "description": "Use this template to setup a workflow that deploys the built images to the GitLab registry",
+  "categories": ["Go"],
+  "filePatterns": ["^Dockerfile"]
+}
