@@ -1,6 +1,0 @@
-{
-  "name": "Build Docker Images Backend Template",
-  "description": "Use this template to setup a workflow that builds Docker images from checked out code.",
-  "categories": ["Go"],
-  "filePatterns": ["^Dockerfile"]
-}

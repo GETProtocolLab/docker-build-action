@@ -1,6 +1,0 @@
-{
-  "name": "Test and Lint Commits Backend Template",
-  "description": "Use this template to setup a workflow that lints the new commits and runs the tests.",
-  "categories": ["Go"],
-  "filePatterns": ["^Makefile"]
-}
