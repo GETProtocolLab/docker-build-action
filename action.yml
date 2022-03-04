@@ -17,6 +17,10 @@ inputs:
   tag:
     description: "Docker image tag"
     required: true
+  build_dev:
+    description: 'Creates a -dev image too if set to true (default: "false")'
+    required: true
+    default: "false"
 
 runs:
   using: "composite"
@@ -38,10 +42,10 @@ runs:
         images: ${{ inputs.image }}
 
     - name: Build and push -dev image
+      if: ${{ inputs.build_dev }} == "true"
       uses: docker/build-push-action@v2.7.0
       with:
         context: ${{ github.workspace }}
-        cache-from: ${{ inputs.image }}:${{ inputs.tag }}
         platforms: linux/amd64
         push: true
         build-args: |
@@ -49,12 +53,13 @@ runs:
         tags: |
           ${{ inputs.image }}:${{ inputs.tag }}-dev
         labels: ${{ steps.meta.outputs.labels }}
+        cache-from: type=gha
+        cache-to: type=gha,mode=max
 
     - name: Build and push prod image
       uses: docker/build-push-action@v2.7.0
       with:
         context: ${{ github.workspace }}
-        cache-from: ${{ inputs.image }}:${{ inputs.tag }}
         platforms: linux/amd64
         push: true
         build-args: |
@@ -62,3 +67,5 @@ runs:
         tags: |
           ${{ inputs.image }}:${{ inputs.tag }}
         labels: ${{ steps.meta.outputs.labels }}
+        cache-from: type=gha
+        cache-to: type=gha,mode=max
