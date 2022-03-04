@@ -1,4 +1,3 @@
-# action.yml
 name: "Docker Build and Push Dev Images"
 description: "Builds the Docker image and pushes it to the specified registry"
 inputs:
