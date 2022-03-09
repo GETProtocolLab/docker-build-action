@@ -21,6 +21,9 @@ inputs:
   build_args:
     description: "Environment variables passed to docker build"
     required: false
+  extra_tags:
+    description: "Additional tags, needs the full version of tags with image name"
+    required: false
 
 runs:
   using: "composite"
@@ -50,6 +53,7 @@ runs:
         build-args: ${{ inputs.build_args }}
         tags: |
           ${{ inputs.image }}:${{ inputs.tag }}
+          ${{ inputs.extra_tags }}
         labels: ${{ steps.meta.outputs.labels }}
         cache-from: type=gha
         cache-to: type=gha,mode=max
