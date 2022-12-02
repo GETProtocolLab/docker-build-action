@@ -24,12 +24,13 @@ inputs:
   extra_tags:
     description: "Additional tags, needs the full version of tags with image name"
     required: false
+  platforms:
+    description: "The target platforms to build docker containers for"
+    required: false
+    default: ["linux/arm64", "linux/amd64"]
 
 runs:
   using: "composite"
-  strategy:
-    matrix:
-      platform: ["linux/arm64", "linux/amd64"]  
   steps:
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v1
@@ -51,7 +52,7 @@ runs:
       uses: docker/build-push-action@v2.7.0
       with:
         context: ${{ github.workspace }}
-        platforms: ${{ matrix.platform }}
+        platforms: ${{ inputs.platforms }}
         push: true
         build-args: ${{ inputs.build_args }}
         tags: |
