@@ -15,6 +15,10 @@ inputs:
   image:
     description: "Docker image name without tag"
     required: true
+  dockerfile:
+    description: "Path to the Docker file"
+    required: false
+    default: "./Dockerfile"
   tag:
     description: "Docker image tag"
     required: true
@@ -47,6 +51,7 @@ runs:
     - name: Build and push prod image
       uses: docker/build-push-action@v4
       with:
+        file: ${{ inputs.dockerfile }}
         context: ${{ github.workspace }}
         platforms: linux/amd64
         push: true
