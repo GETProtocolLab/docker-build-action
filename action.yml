@@ -28,6 +28,10 @@ inputs:
   extra_tags:
     description: "Additional tags, needs the full version of tags with image name"
     required: false
+  platforms:
+    description: "The target platforms to build docker containers for"
+    required: false
+    default: "linux/arm64, linux/amd64"
 
 runs:
   using: "composite"
@@ -35,7 +39,7 @@ runs:
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v2
 
-    - name: Log in to Gitlab Registry
+    - name: Log in to the Registry
       uses: docker/login-action@v2
       with:
         registry: ${{ inputs.registry }}
@@ -53,7 +57,7 @@ runs:
       with:
         file: ${{ inputs.dockerfile }}
         context: ${{ github.workspace }}
-        platforms: linux/amd64
+        platforms: ${{ inputs.platforms }}
         push: true
         build-args: ${{ inputs.build_args }}
         tags: |
