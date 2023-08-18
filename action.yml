@@ -72,5 +72,5 @@ runs:
           ${{ inputs.image }}:${{ inputs.tag }}
           ${{ inputs.extra_tags }}
         labels: ${{ steps.meta.outputs.labels }}
-        cache-from: type=s3,region=eu-central-1,bucket=gutss3dockercache,name=${{ github.event.repository.name }}
+        cache-from: type=s3,region=eu-central-1,bucket=gutss3dockercache,name=${{ inputs.image }}:${{ inputs.tag }}
         cache-to: type=s3,region=eu-central-1,bucket=gutss3dockercache,name=${{ github.event.repository.name }}
