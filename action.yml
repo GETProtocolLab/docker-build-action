@@ -37,10 +37,10 @@ runs:
   using: "composite"
   steps:
     - name: Configure AWS Credentials
-      uses: aws-actions/configure-aws-credentials@v2
+      uses: aws-actions/configure-aws-credentials@v4
       with:
         aws-region: eu-central-1
-        role-to-assume: arn:aws:iam::907019612533:role/github-ci
+        role-to-assume: arn:aws:iam::907019612533:role/github-ci-docker-cache
 
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v2
